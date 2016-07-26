@@ -1,24 +1,27 @@
-This repository contains a small webserver handling the solving process of
-GMPL (an AMPL clone) models directly from your web browser without external
-services.
+This repository contains a small web app that serves as a GUI interface for
+editing and loading models into optimization solvers, solving the resulting
+models and returning results directly from your web browser without external
+services. You can run this app either on your local machine using Docker or
+even install it on a remote machine.
 
-It uses [SYMPHONY from COIN-OR](https://github.com/coin-or/SYMPHONY) as the
-underlying optimization-framework. The webapp is uses light-weight webserver
-(written in *GO*).
+It uses the [COIN-OR Optimization
+Suite](https://github.com/coin-or/COIN-OR-OptimizationSuite) as the underlying
+optimization framework. The web app uses a light-weight webserver (written in
+*GO*).
 
-The original was written by [Patrick Wieschollek](http://wieschollek.info/),
-Thanks, Patrick!
+The [original version](https://github.com/PatWie/symphony-web) of this app was
+written by [Patrick Wieschollek](http://wieschollek.info/), Thanks, Patrick!
 
 [![screenshot](https://github.com/tkralphs/symphony-web/raw/master/screenshot.png)](#Screenshot)
 
 # Install and Use From Docker Hub
 
 This image is now on [Docker
-Hub](https://hub.docker.com/r/tkralphs/symphony-web/). To use, simply install
-Docker (see instructions below) and then do
+Hub](https://hub.docker.com/r/tkralphs/optimization-suite-app/). To use,
+simply install Docker (see instructions below) and then do
 
 ```
-docker run -p PORT:9090 tkralphs/symphony-web
+docker run -p PORT:9090 tkralphs/optimization-suite
 ```
 
 The image will automatically be pulled the first time you use it. In Windows and
@@ -48,15 +51,15 @@ http://localhost:3333/`
 Just clone the repository and build the docker image by
 
 ```
-git clone https://github.com/tkralphs/symphony-web
-cd symphony-web
-sudo docker build -t symphony-web image/
+git clone https://github.com/tkralphs/optimization-suite
+cd optimization-suite
+sudo docker build -t optimization-suite image/
 ```
 
 To launch the application (listening on Port 9090 inside docker) use
 
 ```
-sudo docker run -p PORT:9090 symphony-web
+sudo docker run -p PORT:9090 optimization-suite
 ```
 
 which forwards the port 9090 (inside docker) to *PORT* on your machine.
@@ -80,15 +83,15 @@ From the terminal clone the repository and build the docker image by the
 commands
 
 ```
-git clone https://github.com/PatWie/symphony-web.git
-cd symphony-web
-docker build -t symphony-web image/
+git clone https://github.com/PatWie/optimization-suite.git
+cd optimization-suite
+docker build -t optimization-suite image/
 ```
 
 To launch the application (listening on Port 9090 inside the docker) use
 
 ```
-docker run -p PORT:9090 symphony-web
+docker run -p PORT:9090 optimization-suite
 ```
 
 which forwards the port 9090 (inside docker) to *PORT* on your machine. If you
@@ -138,16 +141,16 @@ eval "$(docker-machine env default)"
 Now follow instructions as above for building the container
 
 ```
-git clone https://github.com/PatWie/symphony-web.git
-cd symphony-web/
-docker build -t symphony-web image/
+git clone https://github.com/tkralphs/optimization-suite.git
+cd optimization-suite/
+docker build -t optimization-suite image/
 ```
 
 Finally, start up the server and the container
 
 ```
 docker-machine start default
-docker run -d -p PORT:9090 symphony-web
+docker run -d -p PORT:9090 optimization-suite
 ```
 
 where `PORT` is the port you want to use for accessing the server on the host

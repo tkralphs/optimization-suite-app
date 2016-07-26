@@ -30,6 +30,25 @@
 			resizable:  false,
 			center__paneSelector:	".outer-center",
 		});
+	$(document).ready(function(){
+
+	        $("#isSelect").click(function () {
+	             alert($('#format').val());
+	        });
+	
+	        $("#selectMPS").click(function () {
+	             $("#format").val("MPS");
+	        });
+	
+	        $("#selectLP").click(function () {
+	             $("#format").val("LP");
+	        });
+	
+	        $("#selectGMPL").click(function () {
+	             $("#format").val("GMPL");
+	        });
+	});
+
 		cmSiteModel =
 	CodeMirror.fromTextArea(document.getElementById('edit-model'),
 	{lineNumbers: true, mode: "ampl", matchBrackets : true, tabMode:
@@ -59,16 +78,20 @@
 		$.ajax({
 	    url : "/api",
 	    type: "POST",
-	    data : {raw_model:cmSiteModel.getValue(),raw_data:cmSiteData.getValue(),raw_params:cmSiteParams.getValue()},//Array ,
-	    success: function(data, textStatus, jqXHR)
-	    {
-	        //data - response from server
-	        cmSiteOutput.setValue(data);
-	    },
-	    error: function (jqXHR, textStatus, errorThrown)
-	    {
-
-	    }
+	    data :
+	          {raw_model:cmSiteModel.getValue(),
+	           raw_data:cmSiteData.getValue(),
+	           raw_params:cmSiteParams.getValue(),
+	           format:$('#format').val()},//Array ,
+	           success: function(data, textStatus, jqXHR)
+	          {
+	           //data - response from server
+	           cmSiteOutput.setValue(data);
+	          },
+	           error: function (jqXHR, textStatus, errorThrown)
+	          {
+	           cmSiteOutput.setValue("Solver returned an error");
+	          }
 	});
 	}
 
@@ -178,6 +201,14 @@
 <div class="outer-center">
 	<h3>Model</h3>
 	<input type="file" onchange="loadModelFile(this)">
+        <select id="format">
+	  <option value="None">Select Format</option>
+	  <option value="MPS">MPS</option>
+	  <option value="LP">LP</option>
+	  <option value="GMPL">GMPL</option>
+	</select>
+	  	
+
 <!--	<button class="btn" type="button" --
   --	onclick='saveModelAsFile()'>Save/Download</button> -->
 <textarea id="edit-model">
@@ -210,7 +241,7 @@ subject to max4_per_group{j in group}:
 
 end;
 </textarea>
-<h3>Data</h3>
+<h3>Data (for GMPL)</h3>
 <input type="file" onchange="loadDataFile(this)">
 <!--	<button class="btn" type="button" --
 		--	onclick='saveDataAsFile()'>Save/Download</button> -->

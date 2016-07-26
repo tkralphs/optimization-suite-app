@@ -20,13 +20,21 @@ func ApiHandler(w http.ResponseWriter, r *http.Request) {
     rawModel := r.Form["raw_model"]
     rawData := r.Form["raw_data"]
     rawParams := r.Form["raw_params"]
-
+    format := r.Form["format"]
     writeLines(rawModel,"request.mod")
     writeLines(rawData,"request.dat")
     writeLines(rawParams,"request.par")
 
-    exec.Command("/bin/bash", "solve.sh").Output()
-
+    if format[0] == "MPS" {
+       exec.Command("/bin/bash", "solve_mps.sh").Output()
+    } else if format[0] == "LP" {
+       exec.Command("/bin/bash", "solve_lp.sh").Output()
+    } else if format[0] == "GMPL" {
+       exec.Command("/bin/bash", "solve_gmpl.sh").Output()
+    } else {
+       exec.Command("/bin/bash", "solve_error.sh").Output()
+    }
+    
     var rawSolution, _ = readLines("request.sol");
 
     for _, line := range rawSolution {
